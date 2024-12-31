@@ -1,0 +1,139 @@
+.game-card {
+  --black-color: #000;
+  --red-color: #f20;
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: #212121;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(222, 154, 65, 0.3);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  z-index: 4;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewport="0 0 48 48" style="fill:black;font-size:24px"><text y="50%">🚩</text></svg>')
+      16 0,
+    auto;
+  &:hover {
+    box-shadow: 0 4px 8px rgba(222, 154, 65, 0.5);
+  }
+}
+h1 {
+  font-family: "Tangerine";
+}
+.reset {
+  --glow-hue: 340;
+  --shadow-hue: 0;
+  width: 120px;
+  height: 42px;
+  background-image: linear-gradient(
+    315deg,
+    #ffc4ec -10%,
+    #efdbfd 50%,
+    #ffedd6 110%
+  );
+  box-shadow: 0 2px 3px 1px hsl(var(--glow-hue) 50% 20% / 50%),
+    inset 0 -10px 20px -10px hsla(var(--shadow-hue), 10%, 90%, 95%);
+  --spring-easing: linear(
+    0,
+    0.002,
+    0.01 0.9%,
+    0.038 1.8%,
+    0.156,
+    0.312 5.8%,
+    0.789 11.1%,
+    1.015 14.2%,
+    1.096,
+    1.157,
+    1.199,
+    1.224 20.3%,
+    1.231,
+    1.231,
+    1.226,
+    1.214 24.6%,
+    1.176 26.9%,
+    1.057 32.6%,
+    1.007 35.5%,
+    0.984,
+    0.968,
+    0.956,
+    0.949 42%,
+    0.946 44.1%,
+    0.95 46.5%,
+    0.998 57.2%,
+    1.007,
+    1.011 63.3%,
+    1.012 68.3%,
+    0.998 84%,
+    1
+  );
+  --spring-duration: 1.33s;
+  transition: all var(--spring-duration) var(--spring-easing);
+  font-family: "Liu Jian Mao Cao", "Tangerine";
+  &:active {
+    transition-duration: calc(var(--spring-duration) * 0.5);
+    scale: 1.2;
+    box-shadow: 0 4px 8px -2px hsl(var(--glow-hue) 50% 20% / 50%),
+      inset 0 0 0 transparent;
+  }
+}
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 150px;
+  margin: 1em auto;
+}
+.chess {
+  width: 50px;
+  height: 50px;
+  border: 2px solid lightgray;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  .chess-item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .red {
+    background: radial-gradient(#fff, var(--red-color));
+  }
+  .black {
+    background: radial-gradient(#fff, var(--black-color));
+  }
+}
+.status {
+  text-align: center;
+  font-size: 1.5em;
+  width: 150px;
+  margin: 1em auto;
+  .red {
+    color: var(--red-color);
+  }
+  .black {
+    color: var(--black-color);
+  }
+  .equal {
+    color: rgb(114, 114, 114);
+  }
+  .win {
+    border: 2px solid;
+    border-radius: 5px;
+  }
+}
+body {
+  margin: 0;
+  padding: 0;
+}

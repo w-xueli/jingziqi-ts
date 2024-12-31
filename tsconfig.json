@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src", //源码目录
+    "outDir": "./dist", //输出目录
+    "target": "es5", //es5兼容最广 esnext可以使用ts最新语法特性
+    "lib": ["dom", "esnext"], //编译过程中要包含的库文件
+    "module": "esnext", //commonjs 默认 Node.js 环境 | esnext ES6模块
+    "moduleResolution": "node", //模块解析方式 默认 Node.js模块解析策略
+    "jsx": "react-jsx", //jsx的编译方式 react默认传统的react编译方式|react-jsx新的jsx转换方式|react-jsxde
+    "baseUrl": "./", //解析非相对模块的基准目录
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "strict": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "declarationDir": "./types",
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "typeRoots": ["src/types", "node_modules/@types"] //指定类型文件的根目录
+  },
+  "include": ["src/**/*.tsx", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "src/components/Tree/index.tsx"]
+}
