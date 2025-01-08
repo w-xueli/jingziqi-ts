@@ -64,19 +64,5 @@ module.exports = {
     hot: true,
     port: 9000, // 你可以选择你想要的端口
     open: true, // 自动打开浏览器
-    Proxy: {
-      "/emojis": {
-        target: "https://emoji-api.com",
-        changeOrigin: true,
-        secure: false, // 如果是https服务，可以设置为false
-        pathRewrite: {
-          "^/emojis": "/emojis", // 重写路径，可以将 `/api` 替换为空字符串
-        },
-        onProxyReq: (proxyReq, req, res) => {
-          const apiKey = "e86214990072a649bcb26b638e1f1b438ddf19a3";
-          proxyReq.path = `${proxyReq.path}?access_key=${apiKey}`;
-        },
-      },
-    },
   },
 };

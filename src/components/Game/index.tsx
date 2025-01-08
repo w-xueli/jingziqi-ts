@@ -3,29 +3,73 @@ import Board from "./Board";
 import Status from "./Status";
 import "./index.scss";
 import { ChessType, GameStatus } from "@/types/enums";
-
+const symbolList = [
+  "😈",
+  "👻",
+  "👽",
+  "👾",
+  "😀",
+  "😄",
+  "😁",
+  "🤣",
+  "😊",
+  "🙃",
+  "🤑",
+  "🥵",
+  "🥶",
+  "🥳",
+  "🤡",
+  "🤖",
+  "👹",
+  "💦",
+  "💥",
+  "🐒",
+  "🦍",
+  "🐕",
+  "🦊",
+  "🐅",
+  "🦄",
+  "🐎",
+  "🦓",
+  "🐄",
+  "🌸",
+  "🌻",
+  "🌷",
+  "🌹",
+  "🍇",
+  "🍉",
+  "🍍",
+  "🍓",
+  "🥝",
+  "🍒",
+  "🍑",
+  "🥕",
+  "🌶️",
+  "🍆",
+  "✨️",
+  "🌟",
+  "💖",
+  "🦋",
+  "👑",
+];
 const GameComp: React.FC = () => {
-  const [symbolList, setSymbolList] = React.useState([]);
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [chesses, setChesses] = React.useState<ChessType[]>([]);
   const [gameStatus, setGameStatus] = React.useState<GameStatus>(
     GameStatus.gaming
   );
-  const [redChessSymbol, setRedChessSymbol] = React.useState("🚩");
+  const [redChessSymbol, setRedChessSymbol] = React.useState("👻");
   const [blackChessSymbol, setBlackChessSymbol] = React.useState("😈");
   const [blackChessColor, setBlackChessColor] = React.useState("#000000");
-  const [redChessColor, setRedChessColor] = React.useState("#f20");
+  const [redChessColor, setRedChessColor] = React.useState("#ff2200");
   const [nextChess, setNextChess] = React.useState<ChessType>(ChessType.black);
   useEffect(() => {
     gameInit();
-    getSymbolList();
+    updateCursor();
   }, []);
-  const getSymbolList = async () => {
-    let list = [];
-    fetch("/emojis")
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
+  useEffect(() => {
+    updateCursor();
+  }, [nextChess, blackChessSymbol, redChessSymbol]);
   /**
    * 初始化数据
    */
@@ -53,7 +97,14 @@ const GameComp: React.FC = () => {
     setGameStatus(getStatus(chesses, index));
     setNextChess(nextChess === ChessType.red ? ChessType.black : ChessType.red);
   };
-
+  const updateCursor = () => {
+    const nextSymbol =
+      nextChess === ChessType.red ? redChessSymbol : blackChessSymbol;
+    const cursorUrl = `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text x="0" y="20" font-size="20">${encodeURIComponent(
+      nextSymbol
+    )}</text></svg>') 16 16, auto`;
+    gameRef.current!.style.cursor = cursorUrl;
+  };
   const getStatus = (chesses: ChessType[], index: number): GameStatus => {
     //1. 判断是否有一方获得胜利
     const horMin = Math.floor(index / 3) * 3;
@@ -83,19 +134,11 @@ const GameComp: React.FC = () => {
     //3. 游戏正在进行
     return GameStatus.gaming;
   };
-  const chessSymbolChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: "R" | "B"
-  ) => {
-    if (type === "R") setRedChessSymbol(e.target.value);
-    else setBlackChessSymbol(e.target.value);
-  };
   const handleChessColorChange = (
     e: ChangeEvent<HTMLInputElement>,
     type: "B" | "R"
   ) => {
     const color = e.target.value;
-    console.log(color);
     if (type === "B") {
       setBlackChessColor(color);
       gameRef.current!.style.setProperty("--black-color", color);
@@ -104,10 +147,21 @@ const GameComp: React.FC = () => {
       gameRef.current!.style.setProperty("--red-color", color);
     }
   };
+  const handleChessSymbolChange = (
+    e: ChangeEvent<HTMLSelectElement>,
+    type: "B" | "R"
+  ) => {
+    const symbol = e.target.value;
+    if (type === "B") {
+      setBlackChessSymbol(symbol);
+    } else {
+      setRedChessSymbol(symbol);
+    }
+  };
   return (
     <div className="game-card" ref={gameRef}>
       <h1>三连棋游戏</h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
         <div>
           <div>
             <label>黑方配色</label>
@@ -119,10 +173,14 @@ const GameComp: React.FC = () => {
           </div>
           <div>
             <label>黑方Symbol</label>
-            <input
-              type="text"
-              onChange={(e) => chessSymbolChange(e, "B")}
-            ></input>
+            <select
+              value={blackChessSymbol}
+              onChange={(e) => handleChessSymbolChange(e, "B")}
+            >
+              {symbolList.map((item, index) => (
+                <option key={index}>{item}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div>
@@ -136,14 +194,23 @@ const GameComp: React.FC = () => {
           </div>
           <div>
             <label>红方Symbol</label>
-            <input
-              type="text"
-              onChange={(e) => chessSymbolChange(e, "R")}
-            ></input>
+            <select
+              value={redChessSymbol}
+              onChange={(e) => setRedChessSymbol(e.target.value)}
+            >
+              {symbolList.map((item, index) => (
+                <option key={index}>{item}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
-      <Status status={gameStatus} next={nextChess} />
+      <Status
+        status={gameStatus}
+        next={nextChess}
+        redChessSymbol={redChessSymbol}
+        blackChessSymbol={blackChessSymbol}
+      />
       <Board
         chesses={chesses}
         isGameOver={gameStatus !== GameStatus.gaming}

@@ -22,7 +22,7 @@ const App: React.FC = () => {
       {/* {bgIndex === 2 ? <BGTree /> : ""} */}
       {/* <div className="[w-500px] h-[500px] bg-[red]">dsvsdv</div> */}
       {[0].includes(bgIndex) ? (
-        <a className="button-wrapper">
+        <div className="button-wrapper">
           <span className="dot dot-1"></span>
           <span className="dot dot-2"></span>
           <span className="dot dot-3"></span>
@@ -31,12 +31,12 @@ const App: React.FC = () => {
           <span className="dot dot-6"></span>
           <span className="dot dot-7"></span>
           <span
-            className="button bg-yellow-500 px-16 py-4 rounded-full uppercase"
+            className="button bg-yellow-500 px-10 py-4 rounded-full"
             onClick={handleBGChange}
           >
-            切换背景
+            <span>切换背景</span>
           </span>
-        </a>
+        </div>
       ) : (
         <LightBtn
           text="切换背景"
